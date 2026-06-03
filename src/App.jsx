@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage.jsx";
 import CompaniesPage from "./pages/CompaniesPage.jsx";
 import CompanyDetailPage from "./pages/CompanyDetailPage.jsx";
 import EmployeesPage from "./pages/EmployeesPage.jsx";
+import { SCOPES } from "./lib/constants.js";
 
 export default function App() {
   return (
@@ -24,9 +25,31 @@ export default function App() {
         }
       >
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/companias" element={<CompaniesPage />} />
-        <Route path="/companias/:id" element={<CompanyDetailPage />} />
-        <Route path="/empleados" element={<EmployeesPage />} />
+        {/* Acceso a cada modulo segun el scope de lectura (igual que el backend). */}
+        <Route
+          path="/companias"
+          element={
+            <ProtectedRoute requireScope={SCOPES.COMPANIA_LEER}>
+              <CompaniesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companias/:id"
+          element={
+            <ProtectedRoute requireScope={SCOPES.COMPANIA_LEER}>
+              <CompanyDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/empleados"
+          element={
+            <ProtectedRoute requireScope={SCOPES.EMPLEADO_LEER}>
+              <EmployeesPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

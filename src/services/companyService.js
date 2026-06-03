@@ -9,27 +9,48 @@ export const companyService = {
     return api.get("/api/companias");
   },
 
+  // HEAD /api/companias  -> X-Total-Count (total de companias)
+  count() {
+    return api.count("/api/companias");
+  },
+
+  // OPTIONS /api/companias  -> verbos permitidos para ESTE usuario (segun scopes)
+  allowedMethods() {
+    return api.options("/api/companias");
+  },
+
+  // GET /api/companias/opciones  -> List<OptionApiResponse> { label, value }
+  getOptions() {
+    return api.get("/api/companias/opciones");
+  },
+
   // GET /api/companias/{id}  -> CompanyApiResponse
   getById(id) {
     return api.get(`/api/companias/${id}`);
   },
 
-  // POST /api/companias  (ADMIN|USUARIO)  -> CompanyApiResponse
+  // POST /api/companias  (SCOPE compania:crear)  -> CompanyApiResponse
   create({ nombre, direccion, telefono }) {
     return api.post("/api/companias", { nombre, direccion, telefono });
   },
 
-  // POST /api/companias/lote  (ADMIN|USUARIO)  -> List<CompanyApiResponse>
+  // POST /api/companias/lote  (SCOPE compania:crear)  -> List<CompanyApiResponse>
   createBatch(companias) {
     return api.post("/api/companias/lote", { companias });
   },
 
-  // PUT /api/companias/{id}  (ADMIN|USUARIO)  -> CompanyApiResponse
+  // PUT /api/companias/{id}  (SCOPE compania:actualizar)  -> CompanyApiResponse
   update(id, { nombre, direccion, telefono }) {
     return api.put(`/api/companias/${id}`, { nombre, direccion, telefono });
   },
 
-  // DELETE /api/companias/{id}  (ADMIN)  -> 204
+  // PATCH /api/companias/{id}  (SCOPE compania:actualizar)  -> CompanyApiResponse
+  // Actualizacion parcial: solo se envian los campos presentes.
+  patch(id, partial) {
+    return api.patch(`/api/companias/${id}`, partial);
+  },
+
+  // DELETE /api/companias/{id}  (SCOPE compania:eliminar)  -> 204
   remove(id) {
     return api.del(`/api/companias/${id}`);
   },
@@ -41,7 +62,7 @@ export const companyService = {
     });
   },
 
-  // POST /api/companias/con-empleados  (ADMIN)  -> CompanyWithEmployeesApiResponse
+  // POST /api/companias/con-empleados  (SCOPE compania:crear)  -> CompanyWithEmployeesApiResponse
   createWithEmployees({ nombre, direccion, telefono, empleados }) {
     return api.post("/api/companias/con-empleados", {
       nombre,

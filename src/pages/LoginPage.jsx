@@ -27,10 +27,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-900 to-blue-600 p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
-        <h1 className="text-2xl font-bold text-slate-800">Iniciar sesión</h1>
-        <p className="mb-6 text-sm text-slate-500">Company Employees</p>
+    <div className="bg-brand-gradient flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-sm rounded-[1.5rem] border border-rose-border bg-card p-8 shadow-pulse-lg">
+        <h1 className="text-2xl font-extrabold tracking-tight text-plum">Iniciar sesión</h1>
+        <p className="mb-6 text-sm font-semibold text-primary">
+          Company<span className="text-tertiary">Employees</span>
+        </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <Alert type="error">{error}</Alert>
@@ -57,9 +59,9 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-slate-500">
+        <p className="mt-5 text-center text-sm text-plum-soft">
           ¿No tienes cuenta?{" "}
-          <Link to="/registro" className="font-semibold text-blue-600 hover:underline">
+          <Link to="/registro" className="font-semibold text-primary hover:underline">
             Regístrate
           </Link>
         </p>

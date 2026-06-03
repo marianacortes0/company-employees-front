@@ -1,7 +1,7 @@
 const ALERT_STYLES = {
-  error: "bg-red-50 text-red-700 border-red-200",
-  success: "bg-green-50 text-green-700 border-green-200",
-  info: "bg-blue-50 text-blue-700 border-blue-200",
+  error: "bg-danger-soft text-danger border-danger/20",
+  success: "bg-success-soft text-success border-success/20",
+  info: "bg-secondary-soft text-primary border-rose-border",
 };
 
 /** Mensaje de estado (error/exito/info). */
@@ -10,7 +10,7 @@ export function Alert({ type = "info", children, onClose }) {
   return (
     <div
       role="alert"
-      className={`flex items-start justify-between gap-3 rounded-lg border px-4 py-2.5 text-sm ${ALERT_STYLES[type]}`}
+      className={`flex items-start justify-between gap-3 rounded-2xl border px-4 py-3 text-sm font-medium ${ALERT_STYLES[type]}`}
     >
       <span>{children}</span>
       {onClose && (
@@ -25,8 +25,8 @@ export function Alert({ type = "info", children, onClose }) {
 /** Spinner centrado para estados de carga. */
 export function Spinner({ label = "Cargando..." }) {
   return (
-    <div className="flex items-center justify-center gap-3 py-8 text-slate-500">
-      <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600" />
+    <div className="flex items-center justify-center gap-3 py-8 text-plum-soft">
+      <span className="h-6 w-6 animate-spin rounded-full border-2 border-rose-border border-t-primary" />
       <span className="text-sm">{label}</span>
     </div>
   );
@@ -34,24 +34,47 @@ export function Spinner({ label = "Cargando..." }) {
 
 /** Estado vacio. */
 export function EmptyState({ children = "No hay datos para mostrar." }) {
-  return (
-    <p className="py-8 text-center text-sm text-slate-400">{children}</p>
-  );
+  return <p className="py-8 text-center text-sm text-plum-soft/70">{children}</p>;
 }
 
-/** Etiqueta de estado (ACTIVE/INACTIVE u otros). */
-export function Badge({ children, color = "slate" }) {
+/** Etiqueta de estado tipo pildora (ACTIVE/INACTIVE u otros). */
+export function Badge({ children, color = "rose" }) {
   const colors = {
-    green: "bg-green-100 text-green-700",
-    red: "bg-red-100 text-red-700",
-    blue: "bg-blue-100 text-blue-700",
-    slate: "bg-slate-100 text-slate-600",
+    green: "bg-success-soft text-success",
+    red: "bg-danger-soft text-danger",
+    primary: "bg-primary text-white",
+    rose: "bg-secondary-soft text-primary",
+    slate: "bg-rose-line text-plum-soft",
   };
   return (
     <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${colors[color]}`}
+      className={`inline-block rounded-full px-3 py-0.5 text-xs font-bold tracking-wide ${colors[color] ?? colors.rose}`}
     >
       {children}
+    </span>
+  );
+}
+
+/** Iniciales a partir de un texto (ej. "Ana Garcia" -> "AG"). */
+export function initialsOf(text = "") {
+  const parts = text.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+/** Avatar circular con degradado magenta->rosa e iniciales blancas (sin fotos). */
+export function Avatar({ name, size = "md", className = "" }) {
+  const sizes = {
+    sm: "h-9 w-9 text-xs",
+    md: "h-11 w-11 text-sm",
+    lg: "h-20 w-20 text-2xl",
+  };
+  return (
+    <span
+      className={`bg-avatar-gradient grid shrink-0 place-items-center rounded-full font-bold text-white shadow-pulse ${sizes[size]} ${className}`}
+    >
+      {initialsOf(name)}
     </span>
   );
 }

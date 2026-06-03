@@ -54,21 +54,21 @@ export default function CompanyWithEmployeesForm({ onSubmit, onCancel }) {
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h4 className="text-sm font-semibold text-slate-700">Empleados</h4>
+          <h4 className="text-sm font-bold text-plum">Empleados</h4>
           <Button type="button" variant="secondary" size="sm" onClick={addEmployee}>
             + Agregar
           </Button>
         </div>
 
         {empleados.map((emp, idx) => (
-          <div key={idx} className="rounded-lg border border-slate-200 p-3">
+          <div key={idx} className="rounded-2xl border border-rose-border p-3">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">#{idx + 1}</span>
+              <span className="text-xs font-bold text-tertiary">#{idx + 1}</span>
               {empleados.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeEmployee(idx)}
-                  className="text-xs text-red-600 hover:underline"
+                  className="text-xs font-semibold text-danger hover:underline"
                 >
                   Quitar
                 </button>

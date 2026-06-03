@@ -71,6 +71,31 @@ export async function request(path, { method = "GET", body, auth = true, params 
   return data;
 }
 
+/**
+ * Variante de `request` que devuelve la respuesta cruda (status + headers) en vez del
+ * cuerpo. Necesaria para verbos cuya informacion viaja en cabeceras: HEAD (X-Total-Count)
+ * y OPTIONS (Allow). No lanza ApiError salvo problemas de red.
+ */
+export async function requestRaw(path, { method = "GET", auth = true } = {}) {
+  const url = `${API_BASE}${path}`;
+  const headers = {};
+  if (auth) {
+    const token = getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  let res;
+  try {
+    res = await fetch(url, { method, headers });
+  } catch {
+    throw new ApiError(
+      "No se pudo conectar con el servidor. ¿Está corriendo el backend?",
+      0,
+      null
+    );
+  }
+  return res;
+}
+
 export const api = {
   get: (path, opts) => request(path, { ...opts, method: "GET" }),
   post: (path, body, opts) => request(path, { ...opts, method: "POST", body }),
@@ -78,4 +103,19 @@ export const api = {
   patch: (path, body, opts) => request(path, { ...opts, method: "PATCH", body }),
   del: (path, body, opts) =>
     request(path, { ...opts, method: "DELETE", body }),
+
+  // OPTIONS -> cabecera Allow: verbos que el usuario puede usar sobre el recurso
+  // segun sus scopes (AllowedMethodsResolver del backend).
+  async options(path, opts) {
+    const res = await requestRaw(path, { ...opts, method: "OPTIONS" });
+    const allow = res.headers.get("Allow") || "";
+    return allow.split(",").map((m) => m.trim()).filter(Boolean);
+  },
+
+  // HEAD -> cabecera X-Total-Count: total de elementos sin traer el cuerpo.
+  async count(path, opts) {
+    const res = await requestRaw(path, { ...opts, method: "HEAD" });
+    const total = res.headers.get("X-Total-Count");
+    return total != null ? Number(total) : null;
+  },
 };

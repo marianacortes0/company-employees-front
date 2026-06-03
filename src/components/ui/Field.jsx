@@ -1,17 +1,17 @@
 const baseControl =
-  "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 disabled:bg-slate-100";
+  "w-full rounded-full border border-rose-border bg-card px-4 py-2.5 text-sm text-plum placeholder:text-plum-soft/50 transition-all focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 disabled:bg-rose-line/40";
 
 /** Input con label integrado. */
 export function Input({ label, id, error, className = "", ...props }) {
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1.5 ${className}`}>
       {label && (
-        <label htmlFor={id} className="text-sm font-semibold text-slate-700">
+        <label htmlFor={id} className="px-1 text-xs font-bold uppercase tracking-wide text-plum-soft">
           {label}
         </label>
       )}
       <input id={id} className={baseControl} {...props} />
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span className="px-1 text-xs text-danger">{error}</span>}
     </div>
   );
 }
@@ -19,9 +19,9 @@ export function Input({ label, id, error, className = "", ...props }) {
 /** Select con label integrado. `options` = [{ value, label }]. */
 export function Select({ label, id, options = [], className = "", children, ...props }) {
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1.5 ${className}`}>
       {label && (
-        <label htmlFor={id} className="text-sm font-semibold text-slate-700">
+        <label htmlFor={id} className="px-1 text-xs font-bold uppercase tracking-wide text-plum-soft">
           {label}
         </label>
       )}

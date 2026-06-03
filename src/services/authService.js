@@ -6,10 +6,12 @@ import { api } from "./apiClient.js";
  */
 export const authService = {
   // POST /api/auth/registro  -> AuthResponse { token, tipo, expiraEnSegundos, usuario }
-  register({ nombre, correo, password, role, companiaId }) {
+  // Registro publico: el backend SIEMPRE crea un USUARIO e ignora roles/scopes del cliente
+  // (anti escalada de privilegios). companiaId es obligatorio (RegisterRequest @NotBlank).
+  register({ nombre, correo, password, companiaId }) {
     return api.post(
       "/api/auth/registro",
-      { nombre, correo, password, role, companiaId: companiaId || null },
+      { nombre, correo, password, companiaId },
       { auth: false }
     );
   },
@@ -19,7 +21,7 @@ export const authService = {
     return api.post("/api/auth/login", { correo, password }, { auth: false });
   },
 
-  // GET /api/auth/perfil  -> AuthenticatedUserResponse { id, nombre, correo, role, companiaId }
+  // GET /api/auth/perfil  -> AuthenticatedUserResponse { id, nombre, correo, roles[], scopes[], companiaId }
   getProfile() {
     return api.get("/api/auth/perfil");
   },

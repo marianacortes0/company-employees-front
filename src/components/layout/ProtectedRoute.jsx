@@ -2,11 +2,13 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth.js";
 
 /**
- * Protege rutas: exige sesion y, opcionalmente, rol ADMIN.
- * Redirige a /login si no hay sesion.
+ * Protege rutas. Exige sesion y, opcionalmente:
+ *   - requireScope: uno o varios scopes (string | string[]); se exigen TODOS.
+ *   - requireAdmin: rol ADMIN (atajo legado).
+ * Redirige a /login si no hay sesion, o a "/" si falta autorizacion.
  */
-export default function ProtectedRoute({ children, requireAdmin = false }) {
-  const { isAuthenticated, isAdmin } = useAuth();
+export default function ProtectedRoute({ children, requireAdmin = false, requireScope }) {
+  const { isAuthenticated, isAdmin, hasScope } = useAuth();
   const location = useLocation();
 
   if (!isAuthenticated) {
@@ -14,6 +16,12 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
   }
   if (requireAdmin && !isAdmin) {
     return <Navigate to="/" replace />;
+  }
+  if (requireScope) {
+    const needed = Array.isArray(requireScope) ? requireScope : [requireScope];
+    if (!needed.every(hasScope)) {
+      return <Navigate to="/" replace />;
+    }
   }
   return children;
 }

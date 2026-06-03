@@ -35,7 +35,7 @@ export default function CompanyDetailPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/companias" className="text-sm text-blue-600 hover:underline">
+      <Link to="/companias" className="text-sm font-semibold text-primary hover:underline">
         ← Volver a compañías
       </Link>
 
@@ -45,7 +45,7 @@ export default function CompanyDetailPage() {
         <Spinner />
       ) : company ? (
         <Card title={company.nombre}>
-          <div className="grid grid-cols-1 gap-2 text-sm text-slate-600 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-2 text-sm text-plum-soft sm:grid-cols-2">
             <p><strong>Dirección:</strong> {company.direccion}</p>
             <p><strong>Teléfono:</strong> {company.telefono}</p>
             <p><strong>Empleados:</strong> {company.employeeCount}</p>

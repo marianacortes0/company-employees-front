@@ -1,14 +1,18 @@
 const VARIANTS = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-400",
+  // Primario: degradado rosa eléctrico, texto blanco, hover "bouncy".
+  primary:
+    "bg-brand-gradient text-white shadow-pulse hover:scale-[1.04] disabled:opacity-50 disabled:hover:scale-100",
+  // Secundario: superficie rosa suave con texto ciruela.
   secondary:
-    "bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-50 border border-slate-300",
-  danger: "bg-red-600 text-white hover:bg-red-700 disabled:bg-slate-400",
-  ghost: "bg-transparent text-slate-600 hover:bg-slate-100 disabled:opacity-50",
+    "bg-secondary-soft text-primary hover:bg-secondary/40 disabled:opacity-50",
+  danger:
+    "bg-danger text-white hover:scale-[1.04] disabled:opacity-50 disabled:hover:scale-100",
+  ghost: "bg-transparent text-plum-soft hover:bg-rose-line disabled:opacity-50",
 };
 
 const SIZES = {
-  sm: "px-2.5 py-1.5 text-xs",
-  md: "px-4 py-2.5 text-sm",
+  sm: "px-3.5 py-1.5 text-xs",
+  md: "px-5 py-2.5 text-sm",
 };
 
 export default function Button({
@@ -23,7 +27,7 @@ export default function Button({
   return (
     <button
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-transform duration-150 disabled:cursor-not-allowed ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...props}
     >
       {loading && (

@@ -6,7 +6,7 @@ export default function Pagination({ page, onChange }) {
   const { pagina, totalPaginas, total } = page;
 
   return (
-    <div className="flex items-center justify-between gap-3 pt-3 text-sm text-slate-500">
+    <div className="flex items-center justify-between gap-3 pt-4 text-sm text-plum-soft">
       <span>
         Página {pagina} de {totalPaginas || 1} · {total} registro(s)
       </span>
